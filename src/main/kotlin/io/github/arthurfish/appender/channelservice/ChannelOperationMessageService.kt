@@ -40,6 +40,7 @@ class ChannelOperationMessageService(
       message
     }
   } catch (e: Exception) {
+    e.printStackTrace()
     throw AssertionError("Processing Failed in channel-service. message: $message")
   }
 

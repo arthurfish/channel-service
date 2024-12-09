@@ -32,17 +32,18 @@ class DatabaseInit(
   @PostConstruct
   @Order(2)
   private fun insertTestDataIfEmpty() {
+    Thread.sleep(2000)
     val countSql = "SELECT COUNT(*) FROM channels"
     val count = jdbcTemplate.queryForObject(countSql, Int::class.java) ?: 0
     if (count == 0) {
       val insertSql = """
                 INSERT INTO channels (channel_name, owner_id, members) VALUES 
-                (?, ?, ?), (?, ?, ?), (?, ?, ?)
+                (?, ?::UUID, ?), (?, ?::UUID, ?), (?, ?::UUID, ?)
             """.trimIndent()
 
-      val ownerId1 = "abc"
-      val ownerId2 = "def"
-      val ownerId3 = "ghi"
+      val ownerId1 = "1ba81f78-2b1d-4b85-8053-5e8bdbb7c7e3"
+      val ownerId2 = "2ba81f78-2b1d-4b85-8053-5e8bdbb7c7e3"
+      val ownerId3 = "3ba81f78-2b1d-4b85-8053-5e8bdbb7c7e3"
 
       jdbcTemplate.update(insertSql,
         "Channel Fake", ownerId1, ownerId1,

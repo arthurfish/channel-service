@@ -1,0 +1,10 @@
+ curl -X POST http://localhost:8080/message      -H "Content-Type: application/json"      -d '{
+           "headers": {
+             "channel_operation": "read"
+           },
+           "topic": "operation.user",
+           "payload": {
+             "channel_id": "3ba318a2-264f-4898-9648-cc0ecb5e7571",
+             "channel_operation": "read"
+           }
+         }'

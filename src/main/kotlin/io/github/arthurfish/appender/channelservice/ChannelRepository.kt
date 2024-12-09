@@ -34,22 +34,24 @@ class ChannelRepository(
     return generatedIdHolder.getKeyAs(String::class.java)!!
   }
 
-  fun readChannelInfo(channelId: String): Map<String, String> {
-    val sql = "SELECT * FROM channels WHERE channel_id = ?"
+  fun readChannelInfo(channelId: String): Map<String, String> = try{
+    val sql = "SELECT * FROM channels WHERE channel_id = ?::UUID"
     val result = jdbcClient.sql(sql).params(channelId).query(ChannelRowMapper()).single()
-    return result;
+    result;
+  }catch(ex:Exception){
+    mapOf("result" to "failed");
   }
 
 
   fun updateChannelName(channelId: String, name: String){
-    val sql = "UPDATE channels SET channel_name = :channel_name WHERE channel_id = :channel_id"
+    val sql = "UPDATE channels SET channel_name = :channel_name WHERE channel_id = :channel_id::UUID"
     val queryResult = jdbcClient.sql(sql)
       .params("channel_id", channelId)
       .params("channel_name", name)
       .update()
   }
   fun updateChannelMembers(channelId: String, members: String) {
-    val sql = "UPDATE channels SET members = ? WHERE channel_id = ?"
+    val sql = "UPDATE channels SET members = ? WHERE channel_id = ?::UUID"
     jdbcClient.sql(sql)
       .param(members) // Assuming members are stored as a comma-separated string
       .param(channelId)
@@ -57,7 +59,7 @@ class ChannelRepository(
   }
 
   fun deleteChannel(channelId: String) {
-    val sql = "DELETE FROM channels WHERE channel_id = ?"
+    val sql = "DELETE FROM channels WHERE channel_id = ?::UUID"
     jdbcClient.sql(sql)
       .param(channelId)
       .update()
