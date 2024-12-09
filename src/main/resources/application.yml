@@ -1,4 +1,15 @@
-spring:
-  application:
-    name: channel-service
+server:
+  port: 2333
 
+spring:
+    rabbitmq:
+      host: localhost
+      port: 5672
+      username: user
+      password: password
+      connection-timeout: 5s
+
+    datasource:
+      url: jdbc:postgresql://localhost:5431/postgres
+      username: postgres
+      password: example
